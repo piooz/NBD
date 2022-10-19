@@ -5,8 +5,6 @@ import model.Show;
 
 public class ShowRepository extends Repository<Show> {
 
-    private EntityManager em;
-
     ShowRepository(EntityManager entityManager) {
         super(entityManager);
     }

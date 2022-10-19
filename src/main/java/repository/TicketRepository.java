@@ -5,8 +5,6 @@ import model.Ticket;
 
 public class TicketRepository extends Repository<Ticket> {
 
-    private EntityManager em;
-
     TicketRepository(EntityManager entityManager) {
         super(entityManager);
     }

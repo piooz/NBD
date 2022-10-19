@@ -5,7 +5,6 @@ import model.Movie;
 
 public class MovieRepository extends Repository<Movie> {
 
-    private EntityManager em;
 
     MovieRepository(EntityManager entityManager) {
         super(entityManager);

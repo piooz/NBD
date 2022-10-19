@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 
 public abstract class Repository<T> {
 
-    private EntityManager em;
+    protected EntityManager em;
 
     Repository(EntityManager entityManager) {
         em = entityManager;
