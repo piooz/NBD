@@ -5,7 +5,7 @@ import model.Client;
 
 public class ClientRepository extends Repository<Client> {
 
-    ClientRepository(EntityManager entityManager) {
+    public ClientRepository(EntityManager entityManager) {
         super(entityManager);
     }
 

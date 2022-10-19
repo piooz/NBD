@@ -6,7 +6,7 @@ public abstract class Repository<T> {
 
     protected EntityManager em;
 
-    Repository(EntityManager entityManager) {
+    public Repository(EntityManager entityManager) {
         em = entityManager;
     }
 
