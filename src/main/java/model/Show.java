@@ -41,4 +41,44 @@ public class Show {
                 ", movie=" + movie +
                 '}';
     }
+
+    public long getId() {
+        return Id;
+    }
+
+    public void setId(long id) {
+        Id = id;
+    }
+
+    public int getHallnumber() {
+        return hallnumber;
+    }
+
+    public void setHallnumber(int hallnumber) {
+        this.hallnumber = hallnumber;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
+    public int getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 }
