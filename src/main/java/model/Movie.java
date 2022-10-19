@@ -22,8 +22,7 @@ public class Movie {
 
     }
 
-    public Movie(long id, String title, int duration, String genre, String director) {
-        Id = id;
+    public Movie(String title, int duration, String genre, String director) {
         this.title = title;
         this.duration = duration;
         this.genre = genre;

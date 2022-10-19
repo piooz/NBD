@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 public class Client {
     @Id
     @GeneratedValue
-    private int Id;
+    private long Id;
     private String firstName;
     @Email
     private String email;
@@ -22,7 +22,7 @@ public class Client {
         this.email = email;
     }
 
-    public int getId() {
+    public long getId() {
         return Id;
     }
 

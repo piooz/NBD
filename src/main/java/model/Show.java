@@ -18,15 +18,13 @@ public class Show {
 
 
 
-    @OneToMany
+    @ManyToOne
     @JoinColumn (name= "movie_id")
     private Movie movie;
     public Show(){
-
     }
 
-    public Show(long id, int hallnumber, int seats, int availableSeats, Movie movie) {
-        Id = id;
+    public Show(int hallnumber, int seats, int availableSeats, Movie movie) {
         this.hallnumber = hallnumber;
         this.seats = seats;
         this.availableSeats = availableSeats;
