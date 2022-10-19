@@ -9,6 +9,8 @@
         <class>model.Movie</class>
         <class>model.Show</class>
         <class>model.Ticket</class>
+        <class>model.Reduced</class>
+        <class>model.Normal</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <shared-cache-mode>NONE</shared-cache-mode>

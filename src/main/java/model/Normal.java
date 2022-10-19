@@ -1,13 +1,12 @@
 package model;
 
-import jakarta.persistence.Access;
-import jakarta.persistence.AccessType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-
+import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 @DiscriminatorValue("Normal")
 @Access(AccessType.FIELD)
+@NoArgsConstructor
 public class Normal extends Ticket{
     public Normal(int seatNumber, float price, Client client, Show show) {
         super(seatNumber, price, client, show);

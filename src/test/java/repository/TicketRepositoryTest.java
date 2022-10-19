@@ -7,6 +7,8 @@ import model.Client;
 import model.Movie;
 import model.Show;
 import model.Ticket;
+import model.Normal;
+import model.Reduced;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -24,8 +26,8 @@ class TicketRepositoryTest {
 
     private static Movie movie;
     private static Movie movie2;
-    private static Ticket ticket;
-    private static Ticket ticket2;
+    private static Normal ticket2;
+    private static Reduced ticket1;
 
     @BeforeAll
     static void beforeAll(){
@@ -37,8 +39,8 @@ class TicketRepositoryTest {
         movie2 = new Movie("Batman Begins",230, "action","Nolan");
         show = new Show(1,30,30, movie);
         show2 = new Show(1,2,1, movie2);
-        ticket = new Ticket(1,20, client, show);
-        ticket2 = new Ticket(2,40, client2, show2);
+        ticket1 = new Reduced(1,1,client,show );
+        ticket2 = new Normal(2,1,client2,show2);
     }
 
     @AfterAll
@@ -63,11 +65,15 @@ class TicketRepositoryTest {
             entityManager.getTransaction().begin();
             entityManager.persist(show);
             entityManager.getTransaction().commit();
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(ticket1);
+            entityManager.getTransaction().commit();
         }
 
         TicketRepository tr = new TicketRepository(entityManager);
-        tr.add(ticket);
-        assertTrue(entityManager.contains(ticket));
+        tr.add(ticket1);
+        assertTrue(entityManager.contains(ticket1));
     }
 
     @Test

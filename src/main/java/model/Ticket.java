@@ -8,6 +8,7 @@ import org.hibernate.annotations.CascadeType;
 import java.io.Serializable;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
+@Valid
 @DiscriminatorColumn(name = "type")
 @Access(AccessType.FIELD)
 public abstract class Ticket implements Serializable {
