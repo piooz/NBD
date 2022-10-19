@@ -65,10 +65,6 @@ class TicketRepositoryTest {
             entityManager.getTransaction().begin();
             entityManager.persist(show);
             entityManager.getTransaction().commit();
-
-            entityManager.getTransaction().begin();
-            entityManager.persist(ticket1);
-            entityManager.getTransaction().commit();
         }
 
         TicketRepository tr = new TicketRepository(entityManager);
@@ -78,5 +74,48 @@ class TicketRepositoryTest {
 
     @Test
     void remove() {
+        {
+            entityManager.getTransaction().begin();
+            entityManager.persist(client);
+            entityManager.getTransaction().commit();
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(movie);
+            entityManager.getTransaction().commit();
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(show);
+            entityManager.getTransaction().commit();
+
+        }
+        TicketRepository tr = new TicketRepository(entityManager);
+        tr.add(ticket1);
+        assertTrue(entityManager.contains(ticket1));
+        tr.remove(ticket1);
+        assertFalse(entityManager.contains(ticket1));
+    }
+
+    @Test
+    void getById() {
+        {
+            entityManager.getTransaction().begin();
+            entityManager.persist(client);
+            entityManager.getTransaction().commit();
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(movie);
+            entityManager.getTransaction().commit();
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(show);
+            entityManager.getTransaction().commit();
+
+        }
+        TicketRepository tr = new TicketRepository(entityManager);
+        ticket1.setId(130);
+        tr.add(ticket1);
+        assertTrue(entityManager.contains(ticket1));
+        Ticket toTy = tr.getById(130);
+        assertSame(toTy, ticket1);
     }
 }

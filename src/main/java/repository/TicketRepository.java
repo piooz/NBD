@@ -10,7 +10,7 @@ public class TicketRepository extends Repository<Ticket> {
     }
 
 
-    public Ticket getById(int Id) {
+    public Ticket getById(long Id) {
         return em.find(Ticket.class, Id);
     }
 }

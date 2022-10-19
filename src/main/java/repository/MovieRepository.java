@@ -11,7 +11,7 @@ public class MovieRepository extends Repository<Movie> {
     }
 
 
-    public Movie getById(int Id) {
+    public Movie getById(long Id) {
         return em.find(Movie.class, Id);
     }
 }

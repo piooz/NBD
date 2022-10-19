@@ -10,7 +10,7 @@ public class ClientRepository extends Repository<Client> {
     }
 
     @Override
-    public Client getById(int Id) {
+    public Client getById(long Id) {
         return em.find(Client.class, Id);
     }
 }

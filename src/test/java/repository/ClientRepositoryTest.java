@@ -51,13 +51,16 @@ class ClientRepositoryTest {
         cr.add(client);
         assertTrue(entityManager.contains(client));
         cr.remove(client);
-        assertTrue(!entityManager.contains(client));
+        assertFalse(entityManager.contains(client));
     }
 
     @Test
     void getById() {
-//        ClientRepository cr = new ClientRepository(entityManager);
-//        cr.add(client);
-//        assertTrue(entityManager.contains(client));
+        ClientRepository cr = new ClientRepository(entityManager);
+        client.setId(30);
+        cr.add(client);
+        assertTrue(entityManager.contains(client));
+        Client ToJa = cr.getById(30);
+        assertSame(ToJa, client);
     }
 }

@@ -30,5 +30,5 @@ public abstract class Repository<T> {
         em.getTransaction().commit();
     }
 
-    abstract public T getById(int Id);
+    abstract public T getById(long Id);
 }
