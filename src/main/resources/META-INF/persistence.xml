@@ -6,6 +6,9 @@
     <persistence-unit name="default">
 
         <class>model.Client</class>
+        <class>model.Movie</class>
+        <class>model.Show</class>
+        <class>model.Ticket</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <shared-cache-mode>NONE</shared-cache-mode>
