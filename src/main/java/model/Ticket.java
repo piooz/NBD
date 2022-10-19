@@ -5,10 +5,12 @@ import jakarta.validation.Valid;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import java.io.Serializable;
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
-@Valid
+@DiscriminatorColumn(name = "type")
 @Access(AccessType.FIELD)
-public class Ticket {
+public abstract class Ticket implements Serializable {
 
     public Ticket() {
     }
@@ -32,6 +34,8 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "show_fk")
     private Show show;
+
+    public abstract float applyDiscount(float price);
 
     public long getId() {
         return id;
@@ -84,3 +88,5 @@ public class Ticket {
                 '}';
     }
 }
+
+
