@@ -25,7 +25,6 @@ public abstract class Ticket implements Serializable {
 
     @Id
     @GeneratedValue
-    @Cascade({CascadeType.ALL})
     private long id;
     private int seatNumber;
     private float price;
