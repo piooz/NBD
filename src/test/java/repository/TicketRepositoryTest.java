@@ -23,7 +23,6 @@ class TicketRepositoryTest {
     private static Client client2;
     private static Show show;
     private static Show show2;
-
     private static Movie movie;
     private static Movie movie2;
     private static Normal ticket2;

@@ -16,6 +16,9 @@ public class Show {
     private int seats;
     private int availableSeats;
 
+    @Version
+    private long version;
+
 
 
     @ManyToOne

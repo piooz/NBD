@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.DialectOverride;
 
 @Entity
 @Valid
@@ -15,6 +16,9 @@ public class Client {
     private String firstName;
     @Email
     private String email;
+
+    @Version
+    private long version;
     public Client() { }
 
     public Client(String firstName, String email) {

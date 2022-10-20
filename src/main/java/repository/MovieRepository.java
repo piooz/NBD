@@ -28,6 +28,9 @@ public class MovieRepository extends Repository<Movie> {
 
 
     public Movie getById(long Id) {
-        return em.find(Movie.class, Id);
+        em.getTransaction().begin();
+        Movie movie = em.find(Movie.class, Id);
+        em.getTransaction().commit();
+        return movie;
     }
 }

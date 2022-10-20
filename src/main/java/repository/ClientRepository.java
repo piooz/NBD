@@ -26,6 +26,9 @@ public class ClientRepository extends Repository<Client> {
 
     @Override
     public Client getById(long Id) {
-        return em.find(Client.class, Id);
+        em.getTransaction().begin();
+        Client cli=  em.find(Client.class, Id);
+        em.getTransaction().commit();
+        return cli;
     }
 }

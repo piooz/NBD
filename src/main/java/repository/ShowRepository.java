@@ -1,6 +1,7 @@
 package repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.From;
@@ -26,6 +27,10 @@ public class ShowRepository extends Repository<Show> {
         return list;
     }
     public Show getById(long Id) {
-        return em.find(Show.class, Id);
+
+        em.getTransaction().begin();
+        Show sh =  em.find(Show.class, Id, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
+        em.getTransaction().commit();
+        return sh;
     }
 }

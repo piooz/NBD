@@ -23,7 +23,7 @@ class ClientManagerTest {
 
     private static ClientManager cm;
 
-    @Before
+    @BeforeAll
     static void beforeAll(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         entityManager = entityManagerFactory.createEntityManager();

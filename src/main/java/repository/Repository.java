@@ -1,6 +1,7 @@
 package repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.From;
@@ -40,7 +41,7 @@ public abstract class Repository<T> {
         List<T> list;
 
         em.getTransaction().begin();
-        list = em.createQuery(query).getResultList();
+        list = em.createQuery(query).setLockMode(LockModeType.OPTIMISTIC).getResultList();
         em.getTransaction().commit();
 
         return list;

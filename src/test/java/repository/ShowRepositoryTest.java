@@ -21,7 +21,7 @@ class ShowRepositoryTest {
     private static Show show;
     private static Show show2;
 
-    @BeforeEach
+    @BeforeAll
     static void beforeAll(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         entityManager = entityManagerFactory.createEntityManager();

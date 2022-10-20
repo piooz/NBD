@@ -28,6 +28,9 @@ public class TicketRepository extends Repository<Ticket> {
 
 
     public Ticket getById(long Id) {
-        return em.find(Ticket.class, Id);
+        em.getTransaction().begin();
+        Ticket ticket =  em.find(Ticket.class, Id);
+        em.getTransaction().commit();
+        return ticket;
     }
 }
