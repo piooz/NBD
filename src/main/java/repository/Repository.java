@@ -1,6 +1,12 @@
 package repository;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.From;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Repository<T> {
 
@@ -30,5 +36,6 @@ public abstract class Repository<T> {
         em.getTransaction().commit();
     }
 
-    abstract public T getById(long Id);
+    public abstract List<T> findAll();
+    public abstract T getById(long Id);
 }

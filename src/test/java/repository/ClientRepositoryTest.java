@@ -8,6 +8,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ClientRepositoryTest {
@@ -62,5 +64,15 @@ class ClientRepositoryTest {
         assertTrue(entityManager.contains(client));
         Client ToJa = cr.getById(30);
         assertSame(ToJa, client);
+    }
+
+    @Test
+    void findAll() {
+        ClientRepository cr = new ClientRepository(entityManager);
+        cr.add(client);
+        cr.add(client2);
+        assertTrue(entityManager.contains(client));
+        List<Client> list = cr.findAll();
+        assertTrue(list.size() == 2);
     }
 }
