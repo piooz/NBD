@@ -35,6 +35,9 @@ public abstract class Ticket implements Serializable {
     @JoinColumn(name = "show_fk")
     private Show show;
 
+    @Version
+    private long version;
+
     public abstract float applyDiscount(float price);
 
     public long getId() {
