@@ -7,6 +7,7 @@ import model.Movie;
 import model.Show;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,15 +21,20 @@ class ShowRepositoryTest {
     private static Show show;
     private static Show show2;
 
-    @BeforeAll
+    @BeforeEach
     static void beforeAll(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         entityManager = entityManagerFactory.createEntityManager();
 
-        movie = new Movie("Space Odyssey",200,"sci-fi","Kubrick");
-        movie2 = new Movie("Batman Begins",230, "action","Nolan");
-        show = new Show(1,30,30, movie);
-        show2 = new Show(1,2,1, movie2);
+    }
+
+    @BeforeEach
+    void persist()
+    {
+        movie = new Movie("Space Odyssey", 200, "sci-fi", "Kubrick");
+        movie2 = new Movie("Batman Begins", 230, "action", "Nolan");
+        show = new Show(1, 30, 30, movie);
+        show2 = new Show(1, 2, 1, movie2);
 
         entityManager.getTransaction().begin();
         entityManager.persist(movie);
@@ -67,10 +73,10 @@ class ShowRepositoryTest {
     @Test
     void getById() {
         ShowRepository sr = new ShowRepository(entityManager);
-        show.setId(100);
+        show.setId(838);
         sr.add(show);
         assertTrue(entityManager.contains(show));
-        Show toTy = sr.getById(100);
+        Show toTy = sr.getById(838);
         assertSame(toTy, show);
     }
 }

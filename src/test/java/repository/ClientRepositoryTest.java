@@ -6,6 +6,7 @@ import jakarta.persistence.Persistence;
 import model.Client;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,14 +20,14 @@ class ClientRepositoryTest {
     private static Client client;
     private static Client client2;
 
-    @BeforeAll
-    static void beforeAll(){
+    @BeforeEach
+    void beforeAll(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         entityManager = entityManagerFactory.createEntityManager();
     }
 
-    @BeforeAll
-    static void setClient() {
+    @BeforeEach
+    void setClient() {
         client = new Client("Helena", "Henia@pw.lp");
         client2 = new Client("Adam", "mirek@onet.pl");
     }

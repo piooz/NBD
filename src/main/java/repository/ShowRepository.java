@@ -22,6 +22,7 @@ public class ShowRepository extends Repository<Show> {
         From<Show,Show> from = query.from(Show.class);
         query.select(from);
         list = em.createQuery(query).getResultList();
+
         return list;
     }
     public Show getById(long Id) {

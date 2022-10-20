@@ -36,6 +36,16 @@ public abstract class Repository<T> {
         em.getTransaction().commit();
     }
 
+    public List<T> findByQuery(CriteriaQuery<T> query) {
+        List<T> list;
+
+        em.getTransaction().begin();
+        list = em.createQuery(query).getResultList();
+        em.getTransaction().commit();
+
+        return list;
+    }
+
     public abstract List<T> findAll();
     public abstract T getById(long Id);
 }

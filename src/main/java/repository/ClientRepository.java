@@ -1,13 +1,10 @@
 package repository;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.*;
+import jakarta.validation.constraints.Email;
 import model.Client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ClientRepository extends Repository<Client> {
