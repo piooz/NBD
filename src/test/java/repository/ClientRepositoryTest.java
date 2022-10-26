@@ -2,6 +2,7 @@ package repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import model.Client;
 import org.junit.jupiter.api.AfterAll;
@@ -69,10 +70,13 @@ class ClientRepositoryTest {
     @Test
     void findAll() {
         ClientRepository cr = new ClientRepository(entityManager);
+        EntityTransaction et = entityManager.getTransaction();
+        et.begin();
         cr.add(client);
         cr.add(client2);
+        et.commit();
         assertTrue(entityManager.contains(client));
         List<Client> list = cr.findAll();
-        assertTrue(list.size() == 2);
+        assertEquals(2,list.size());
     }
 }

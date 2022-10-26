@@ -2,6 +2,7 @@ package repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import model.Client;
 import model.Movie;
@@ -25,12 +26,12 @@ class TicketRepositoryTest {
     private static Show show2;
     private static Movie movie;
     private static Movie movie2;
-    private static Normal ticket2;
+    private static Ticket ticket2;
     private static Reduced ticket1;
 
     @BeforeAll
     static void beforeAll(){
-        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        entityManagerFactory = Persistence.createEntityManagerFactory("default");
         entityManager = entityManagerFactory.createEntityManager();
         client = new Client("Helena", "Henia@pw.lp");
         client2 = new Client("Adam", "mirek@onet.pl");
@@ -90,7 +91,11 @@ class TicketRepositoryTest {
         TicketRepository tr = new TicketRepository(entityManager);
         tr.add(ticket1);
         assertTrue(entityManager.contains(ticket1));
+
+        EntityTransaction et = entityManager.getTransaction();
+        et.begin();
         tr.remove(ticket1);
+        et.commit();
         assertFalse(entityManager.contains(ticket1));
     }
 

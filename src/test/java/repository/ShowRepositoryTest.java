@@ -2,6 +2,7 @@ package repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import model.Movie;
 import model.Show;
@@ -76,7 +77,10 @@ class ShowRepositoryTest {
         show.setId(838);
         sr.add(show);
         assertTrue(entityManager.contains(show));
+        EntityTransaction et = entityManager.getTransaction();
+        et.begin();
         Show toTy = sr.getById(838);
+        et.commit();
         assertSame(toTy, show);
     }
 }

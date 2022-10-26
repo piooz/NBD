@@ -4,7 +4,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.From;
-import model.Show;
 import model.Ticket;
 
 import java.util.List;
@@ -28,9 +27,7 @@ public class TicketRepository extends Repository<Ticket> {
 
 
     public Ticket getById(long Id) {
-        em.getTransaction().begin();
         Ticket ticket =  em.find(Ticket.class, Id);
-        em.getTransaction().commit();
         return ticket;
     }
 }

@@ -28,9 +28,7 @@ public class ShowRepository extends Repository<Show> {
     }
     public Show getById(long Id) {
 
-        em.getTransaction().begin();
         Show sh =  em.find(Show.class, Id, LockModeType.OPTIMISTIC_FORCE_INCREMENT);
-        em.getTransaction().commit();
         return sh;
     }
 }

@@ -2,6 +2,7 @@ package managers;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import model.Client;
 import model.Movie;
@@ -78,7 +79,7 @@ class TicketManagerTest {
     void addTicket() throws Exception {
         int before = show.getAvailableSeats();
         TicketManager tm = new TicketManager(entityManager);
-        Ticket ticket = tm.addTicket(11,30, cli, show);
+        Ticket ticket = tm.addTicket(11,30, cli, show,false);
 
         List<Ticket> list = tm.findAll();
         assertTrue(list.contains(ticket));
@@ -89,10 +90,20 @@ class TicketManagerTest {
     @Test
     void addTicketThrow() {
         TicketManager tm = new TicketManager(entityManager);
-        assertThrows(Exception.class, ()-> tm.addTicket(11,30, cli, show3));
+        assertThrows(Exception.class, ()-> tm.addTicket(11,30, cli, show3,true));
     }
 
     @Test
     void addTicketConflict() throws Exception {
+        TicketManager tm = new TicketManager(entityManager);
+
+        EntityTransaction et2 = entityManager.getTransaction();
+        et2.begin();
+        show2.setAvailableSeats(1);
+        et2.commit();
+        tm.addTicket(10,20, cli, show2,false);
+
+        assertEquals(0,show2.getAvailableSeats());
+
     }
 }

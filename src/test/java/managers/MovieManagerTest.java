@@ -23,7 +23,7 @@ class MovieManagerTest {
     private static MovieManager mm;
 
     @BeforeAll
-    void beforeAll(){
+    static void beforeAll(){
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
         entityManager = entityManagerFactory.createEntityManager();
 
