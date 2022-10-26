@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import model.Movie;
 import model.Show;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -46,6 +47,12 @@ class ShowManagerTest {
         entityManager.persist(show);
         entityManager.getTransaction().commit();
 
+    }
+    @AfterAll
+    static void afterAll() {
+        if(entityManagerFactory != null) {
+            entityManagerFactory.close();
+        }
     }
 
     @Test

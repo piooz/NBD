@@ -31,8 +31,6 @@ public abstract class Repository<T> {
         em.getTransaction().begin();
         if(em.contains(object)){
             em.remove(object);
-        } else {
-            em.merge(object);
         }
         em.getTransaction().commit();
     }

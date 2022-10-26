@@ -6,6 +6,7 @@ import model.Client;
 import model.Normal;
 import model.Show;
 import model.Ticket;
+import repository.ShowRepository;
 import repository.TicketRepository;
 
 import java.util.List;
@@ -13,11 +14,13 @@ import java.util.List;
 public class TicketManager {
 
     private final TicketRepository tr;
+    private ShowRepository sr;
     private EntityManager em;
 
     public TicketManager(EntityManager entityManager) {
         em = entityManager;
         tr = new TicketRepository(entityManager);
+        sr = new ShowRepository(entityManager);
     }
 
     public void removeTicket(long Id) {
@@ -37,6 +40,9 @@ public class TicketManager {
 
     public Ticket addTicket(int seatNumber, float price, Client client, Show show) throws Exception {
         if(show.getAvailableSeats() > 0) {
+            show.setAvailableSeats(show.getAvailableSeats() - 1);
+            sr.add(show);
+
             Normal ticket = new Normal(seatNumber, price, client, show);
             tr.add(ticket);
             return ticket;
