@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 
+import java.io.Serializable;
+
 @Entity
 @Valid
 @Access(AccessType.FIELD)
-public class Movie {
+public class Movie implements Serializable {
     @Id
     @GeneratedValue
     private long Id;

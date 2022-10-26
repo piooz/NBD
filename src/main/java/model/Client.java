@@ -6,10 +6,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.DialectOverride;
 
+import java.io.Serializable;
+
 @Entity
 @Valid
 @Access(AccessType.FIELD)
-public class Client {
+public class Client implements Serializable {
     @Id
     @GeneratedValue
     private long Id;
