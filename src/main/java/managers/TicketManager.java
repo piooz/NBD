@@ -2,6 +2,7 @@ package managers;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.OptimisticLockException;
 import jakarta.persistence.criteria.CriteriaQuery;
 import model.*;
 import repository.ShowRepository;
@@ -54,23 +55,39 @@ public class TicketManager {
     }
 
     public Ticket addTicket(int seatNumber, float price, Client client, Show show, Boolean reduced) throws Exception {
-        Ticket ticket;
-        if(show.getAvailableSeats() > 0) {
-            et = em.getTransaction();
-            et.begin();
-            show.setAvailableSeats(show.getAvailableSeats() - 1);
-            if(reduced) {
-                ticket = new Reduced(seatNumber, price, client, show);
-            }
-            else {
-                ticket = new Normal(seatNumber, price, client, show);
-            }
-            tr.add(ticket);
-            et.commit();
-
-            return ticket;
-        } else {
+        if(show.getAvailableSeats() <= 0) {
             throw new Exception("Show has no more available seats");
         }
+        Ticket ticket;
+
+        try {
+            et = em.getTransaction();
+            et.begin();
+            ticket = createTicketLogic(seatNumber,price,client,show,reduced);
+            et.commit();
+        }
+        catch(OptimisticLockException e)
+        {
+            em.getTransaction().begin();
+            em.merge(client);
+            em.merge(show);
+            ticket = createTicketLogic(seatNumber,price,client,show,reduced);
+
+            em.getTransaction().commit();
+        }
+        return ticket;
+    }
+    private Ticket createTicketLogic(int seatNumber, float price, Client client, Show show, Boolean reduced) {
+        Ticket ticket;
+
+        show.setAvailableSeats(show.getAvailableSeats() - 1);
+        if(reduced) {
+            ticket = new Reduced(seatNumber, price, client, show);
+        }
+        else {
+            ticket = new Normal(seatNumber, price, client, show);
+        }
+        tr.add(ticket);
+        return ticket;
     }
 }

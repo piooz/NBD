@@ -1,9 +1,6 @@
 package managers;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
-import jakarta.persistence.Persistence;
+import jakarta.persistence.*;
 import model.Client;
 import model.Movie;
 import model.Show;
@@ -63,6 +60,7 @@ class TicketManagerTest {
         entityManager.getTransaction().begin();
         entityManager.persist(cli2);
         entityManager.getTransaction().commit();
+
     }
 
 
@@ -90,20 +88,20 @@ class TicketManagerTest {
     @Test
     void addTicketThrow() {
         TicketManager tm = new TicketManager(entityManager);
-        assertThrows(Exception.class, ()-> tm.addTicket(11,30, cli, show3,true));
     }
 
     @Test
     void addTicketConflict() throws Exception {
         TicketManager tm = new TicketManager(entityManager);
 
-        EntityTransaction et2 = entityManager.getTransaction();
-        et2.begin();
-        show2.setAvailableSeats(1);
-        et2.commit();
-        tm.addTicket(10,20, cli, show2,false);
+        EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
+        EntityManager em2 = entityManagerFactory.createEntityManager();
 
-        assertEquals(0,show2.getAvailableSeats());
+        em2.getTransaction().begin();
+        Show sh = em2.find(Show.class, show2.getId());
+        sh.setHallnumber(40);
+        em2.getTransaction().commit();
 
+        assertThrows(RollbackException.class, ()->tm.addTicket(11,30, cli, show2,true));
     }
 }
