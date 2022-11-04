@@ -36,46 +36,27 @@ public abstract class Repository {
                 .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),codecRegistry))
                 .build();
         MongoClient = MongoClients.create(settings);
-        CinemaDB = MongoClient.getDatabase("cinema");
+        CinemaDB = MongoClient.getDatabase("admin");
     }
 
     public ConnectionString getConnectionString() {
         return connectionString;
     }
 
-    public void setConnectionString(ConnectionString connectionString) {
-        this.connectionString = connectionString;
-    }
-
     public MongoCredential getMongoCredential() {
         return mongoCredential;
-    }
-
-    public void setMongoCredential(MongoCredential mongoCredential) {
-        this.mongoCredential = mongoCredential;
     }
 
     public CodecRegistry getCodecRegistry() {
         return codecRegistry;
     }
 
-    public void setCodecRegistry(CodecRegistry codecRegistry) {
-        this.codecRegistry = codecRegistry;
-    }
-
     public com.mongodb.client.MongoClient getMongoClient() {
         return MongoClient;
-    }
-
-    public void setMongoClient(com.mongodb.client.MongoClient mongoClient) {
-        MongoClient = mongoClient;
     }
 
     public MongoDatabase getCinemaDB() {
         return CinemaDB;
     }
 
-    public void setCinemaDB(MongoDatabase cinemaDB) {
-        CinemaDB = cinemaDB;
-    }
 }

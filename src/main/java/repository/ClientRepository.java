@@ -13,19 +13,30 @@ public class ClientRepository extends Repository{
 
     public ClientRepository() {
         initConnection();
-        clientMdbMongoCollection = getCinemaDB().getCollection("client", ClientMdb.class);
-
+        clientMdbMongoCollection = getCinemaDB().getCollection("clients", ClientMdb.class);
+        System.out.println(clientMdbMongoCollection);
     }
-    private MongoCollection<ClientMdb> clientMdbMongoCollection;
+    private final MongoCollection<ClientMdb> clientMdbMongoCollection;
 
-    public void add(ClientMdb client) {
+    public boolean add(ClientMdb client) {
+        if(isExisting(client)) {
+            return false;
+        }
         clientMdbMongoCollection.insertOne(client);
+        return true;
+    }
+
+    private boolean isExisting(ClientMdb client) {
+        Bson filter;
+        filter = eq("email", client.getEmail());
+
+        ArrayList<ClientMdb> ls = clientMdbMongoCollection.find(filter).into(new ArrayList<>());
+        return !ls.isEmpty();
     }
 
     public ClientMdb remove(ObjectId id) {
         Bson filer = eq("_id", id);
-        ClientMdb client = clientMdbMongoCollection.findOneAndDelete(filer);
-        return client;
+        return clientMdbMongoCollection.findOneAndDelete(filer);
     }
     public void dropAllClients()
     {
@@ -33,15 +44,13 @@ public class ClientRepository extends Repository{
     }
 
     public ArrayList<ClientMdb> findAll() {
-        ArrayList<ClientMdb> list = clientMdbMongoCollection.find().into(new ArrayList<> ());
-        return list;
+        return clientMdbMongoCollection.find().into(new ArrayList<> ());
     }
 
     public ArrayList<ClientMdb> find(ObjectId id) {
         Bson filter = eq("_id", id);
 
-        ArrayList<ClientMdb> list = clientMdbMongoCollection.find(filter, ClientMdb.class).into(new ArrayList<> ());
-        return list;
+        return clientMdbMongoCollection.find(filter, ClientMdb.class).into(new ArrayList<> ());
     }
 
 }
