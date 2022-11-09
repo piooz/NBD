@@ -67,7 +67,7 @@ public class TicketRepository extends Repository{
 
     private void updateDataBase(TicketMdb ticket, ShowMdb show) {
         Bson fil = eq("_id", show.getId());
-        Bson update = Updates.inc("availableSeats", 1);
+        Bson update = Updates.inc("availableSeats", -1);
         showCollection.findOneAndUpdate(fil, update);
         ticketCollection.insertOne(ticket);
     }
