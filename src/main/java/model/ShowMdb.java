@@ -5,6 +5,8 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import repository.MovieRepository;
 
+import java.util.Objects;
+
 public class ShowMdb {
     @BsonProperty("_id")
     private ObjectId id;
@@ -68,5 +70,29 @@ public class ShowMdb {
 
     public void setMovieMdb(MovieMdb movieMdb) {
         this.movie = movieMdb;
+    }
+
+    @Override
+    public String toString() {
+        return "ShowMdb{" +
+                "id=" + id +
+                ", seats=" + seats +
+                ", availableSeats=" + availableSeats +
+                ", hallNumber=" + hallNumber +
+                ", movie=" + movie +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ShowMdb showMdb = (ShowMdb) o;
+        return seats == showMdb.seats && availableSeats == showMdb.availableSeats && hallNumber == showMdb.hallNumber && id.equals(showMdb.id) && Objects.equals(movie, showMdb.movie);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, seats, availableSeats, hallNumber, movie);
     }
 }
