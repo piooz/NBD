@@ -17,18 +17,18 @@ class TicketRepositoryTest {
 
     @Test
     public void add() {
-        // nie przechodzi
-//        ObjectId id1 = new ObjectId();
-//        ObjectId id2 = new ObjectId();
-//
-//        MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
-//        mr.add(mov);
-//        ShowMdb show = new ShowMdb(id2, 4,2,3,mov);
-//        sr.add(show);
-//
-//        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show);
-//
-//        assertTrue(tr.add(ticket));
+        // przechodzi
+        ObjectId id1 = new ObjectId();
+        ObjectId id2 = new ObjectId();
+
+        MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
+        mr.add(mov);
+        ShowMdb show = new ShowMdb(id2, 4,2,3,mov);
+        sr.add(show);
+
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId());
+
+        assertTrue(tr.add(ticket));
     }
 
 }

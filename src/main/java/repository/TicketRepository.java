@@ -4,7 +4,9 @@ import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.TransactionBody;
 import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.Updates;
 import com.mongodb.client.result.UpdateResult;
+import model.NormalMdb;
 import model.ShowMdb;
 import model.TicketMdb;
 import org.bson.conversions.Bson;
@@ -52,7 +54,7 @@ public class TicketRepository extends Repository{
 
 
     private ShowMdb getShowFromDatabase(TicketMdb ticket) {
-        Bson filter = eq("_id", ticket.getShow().getId());
+        Bson filter = eq("_id", ticket.getShow());
         ArrayList<ShowMdb> ls = showCollection.find(filter, ShowMdb.class).into(new ArrayList<> ());
         ShowMdb sh;
         if(!ls.isEmpty())
@@ -64,19 +66,10 @@ public class TicketRepository extends Repository{
     }
 
     private void updateDataBase(TicketMdb ticket, ShowMdb show) {
-        show.setSeats(show.getSeats() - 1);
         Bson fil = eq("_id", show.getId());
-        Bson update = eq("availableSeats", show.getAvailableSeats());
-        showCollection.findOneAndUpdate(fil,update);
+        Bson update = Updates.inc("availableSeats", 1);
+        showCollection.findOneAndUpdate(fil, update);
         ticketCollection.insertOne(ticket);
-    }
-
-    private boolean isShowHaveSeats(TicketMdb ticket) {
-        Bson filter = eq("_id", ticket.getShow().getId());
-        ArrayList<ShowMdb> ls = showCollection.find(filter, ShowMdb.class).into(new ArrayList<> ());
-        ShowMdb sh = ls.get(0);
-        return sh.getAvailableSeats() > 0;
-
     }
 
     private boolean isExisting(TicketMdb ticket) {
@@ -101,7 +94,8 @@ public class TicketRepository extends Repository{
     public ArrayList<TicketMdb> find(ObjectId id) {
         Bson filter = eq("_id", id);
 
-        return ticketCollection.find(filter, TicketMdb.class).into(new ArrayList<> ());
+        ArrayList<TicketMdb> ls = ticketCollection.find(filter, NormalMdb.class).into(new ArrayList<> ());
+        return ls;
     }
 
     public TicketMdb updateOne(ObjectId id, Bson updateOperation) {

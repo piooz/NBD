@@ -8,33 +8,35 @@ import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
-@BsonDiscriminator(key = "_class")
+@BsonDiscriminator(key = "_cls", value="abstract")
 public abstract class TicketMdb {
+
+    @BsonId
+    private ObjectId id;
     @BsonProperty("price")
     private float price;
     @BsonProperty("seatNumber")
     private int seatNumber;
-    @BsonId
-    private ObjectId id;
     @BsonProperty("show")
-    private ShowMdb show;
+    private ObjectId show;
 
     @BsonCreator
     public TicketMdb(@BsonId ObjectId id,
                      @BsonProperty("price") float price,
                      @BsonProperty("seatNumber") int seatNumber,
-                     @BsonProperty("show") ShowMdb show ) {
+                     @BsonProperty("show") ObjectId show ) {
         this.price = price;
         this.seatNumber = seatNumber;
         this.id = id;
         this.show = show;
     }
 
-    public ShowMdb getShow() {
+
+    public ObjectId getShow() {
         return show;
     }
 
-    public void setShow(ShowMdb show) {
+    public void setShow(ObjectId show) {
         this.show = show;
     }
 

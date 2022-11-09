@@ -6,14 +6,14 @@ import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-@BsonDiscriminator(key = "_class", value = "reduced")
+@BsonDiscriminator(key = "_cls", value = "reduced")
 public class ReducedMdb extends TicketMdb{
 
     @BsonCreator
     public ReducedMdb(@BsonId ObjectId id,
                       @BsonProperty("price") float price,
                       @BsonProperty("seatNumber") int seatNumber,
-                      @BsonProperty("show") ShowMdb show) {
+                      @BsonProperty("show") ObjectId show) {
         super(id, price, seatNumber, show);
     }
 
