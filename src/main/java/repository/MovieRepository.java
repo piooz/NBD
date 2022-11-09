@@ -8,8 +8,7 @@ import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Filters.*;
 
 public class MovieRepository extends Repository{
 
@@ -30,7 +29,7 @@ public class MovieRepository extends Repository{
 
     private boolean isExisting(MovieMdb movie) {
         Bson filter;
-            filter = and(eq("title", movie.getTitle()), eq("_id", movie.getId()));
+            filter = or(eq("title", movie.getTitle()), eq("_id", movie.getId()));
 
         ArrayList<MovieMdb> ls = movieMdbCollection.find(filter).into(new ArrayList<>());
         return !ls.isEmpty();
