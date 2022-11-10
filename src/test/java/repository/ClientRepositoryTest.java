@@ -1,7 +1,6 @@
 package repository;
 
 import model.ClientMdb;
-import model.MovieMdb;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 
@@ -25,14 +24,14 @@ class ClientRepositoryTest {
 
     @Test
     void drop() {
-        cr.dropAllClients();
+        cr.drop();
         ArrayList<ClientMdb> list = cr.findAll();
         assertEquals(0, list.size());
     }
 
     @Test
     void remove() {
-        cr.dropAllClients();
+        cr.drop();
         ObjectId id = new ObjectId();
 
         ClientMdb cli = new ClientMdb(id, "Jaworek", "Jacek@wp.pl");
@@ -49,7 +48,7 @@ class ClientRepositoryTest {
 
     @Test
     void findAll() {
-        cr.dropAllClients();
+        cr.drop();
 
         ObjectId id = new ObjectId();
         ClientMdb cli = new ClientMdb(id, "Jaworek", "Jacek@wp.pl");
@@ -65,7 +64,7 @@ class ClientRepositoryTest {
 
     @Test
     void findById() {
-        cr.dropAllClients();
+        cr.drop();
         ObjectId id = new ObjectId();
         ClientMdb cli = new ClientMdb(id, "Jaworek", "Jacek@wp.pl");
         cr.add(cli);

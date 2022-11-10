@@ -13,8 +13,9 @@ public class ReducedMdb extends TicketMdb{
     public ReducedMdb(@BsonId ObjectId id,
                       @BsonProperty("price") float price,
                       @BsonProperty("seatNumber") int seatNumber,
-                      @BsonProperty("show") ObjectId show) {
-        super(id, price, seatNumber, show);
+                      @BsonProperty("show") ObjectId show,
+                      @BsonProperty("client") ObjectId client ) {
+        super(id, price, seatNumber, show, client);
     }
 
     public float applyDiscount() {

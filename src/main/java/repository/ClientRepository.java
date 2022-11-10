@@ -67,7 +67,7 @@ public class ClientRepository extends Repository{
         Bson filer = eq("_id", id);
         return clientMdbMongoCollection.findOneAndDelete(filer);
     }
-    public void dropAllClients()
+    public void drop()
     {
         clientMdbMongoCollection.drop();
     }

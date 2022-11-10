@@ -1,10 +1,7 @@
 package repository;
 
 import com.mongodb.MongoCommandException;
-import model.MovieMdb;
-import model.NormalMdb;
-import model.ShowMdb;
-import model.TicketMdb;
+import model.*;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 
@@ -17,18 +14,23 @@ class TicketRepositoryTest {
     TicketRepository tr = new TicketRepository();
     ShowRepository sr = new ShowRepository();
     MovieRepository mr = new MovieRepository();
+    ClientRepository cr = new ClientRepository();
 
     @Test
     public void add() {
         ObjectId id1 = new ObjectId();
         ObjectId id2 = new ObjectId();
+        ObjectId id3 = new ObjectId();
 
         MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
         mr.add(mov);
         ShowMdb show = new ShowMdb(id2, 4,2,3,mov);
         sr.add(show);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId());
+        ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
+        cr.add(cli);
+
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
 
         assertTrue(tr.add(ticket));
         ArrayList<ShowMdb> ls = sr.find(id2);
@@ -45,13 +47,16 @@ class TicketRepositoryTest {
         tr.drop();
         ObjectId id1 = new ObjectId();
         ObjectId id2 = new ObjectId();
+        ObjectId id3 = new ObjectId();
 
         MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
         mr.add(mov);
         ShowMdb show = new ShowMdb(id2, 4,1,3,mov);
         sr.add(show);
+        ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
+        cr.add(cli);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId());
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
 
         assertTrue(tr.add(ticket));
     }
@@ -60,15 +65,19 @@ class TicketRepositoryTest {
     void addToFullShow() {
         tr.drop();
         mr.drop();
+        cr.drop();
         ObjectId id1 = new ObjectId();
         ObjectId id2 = new ObjectId();
+        ObjectId id3 = new ObjectId();
 
         MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
         mr.add(mov);
         ShowMdb show = new ShowMdb(id2, 4,0,3,mov);
         sr.add(show);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId());
+        ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
+        cr.add(cli);
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
 
         assertFalse(tr.add(ticket));
     }
@@ -85,7 +94,10 @@ class TicketRepositoryTest {
         ShowMdb show = new ShowMdb(id2, 4,2,3,mov);
         sr.add(show);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId());
+        ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
+        cr.add(cli);
+
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(),cli.getClientID());
 
         assertTrue(tr.add(ticket));
         ArrayList<ShowMdb> ls = sr.find(id2);
