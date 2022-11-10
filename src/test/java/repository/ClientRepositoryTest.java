@@ -19,7 +19,17 @@ class ClientRepositoryTest {
         cr.add(cli2);
         ArrayList<ClientMdb> ls = cr.findAll();
         assertEquals(2, ls.size());
-
+    }
+    @Test
+    void addexisting() {
+        ClientMdb cli = new ClientMdb("Jaworek", "Jacek@wp.pl");
+        ClientMdb cli2 = new ClientMdb("Kawiorek", "Kawiorek@wp.pl");
+        ClientMdb cli3 = new ClientMdb("Kawiorek", "Kawiorek@wp.pl");
+        cr.add(cli);
+        cr.add(cli2);
+        assertFalse(cr.add(cli3));
+        ArrayList<ClientMdb> ls = cr.findAll();
+        assertEquals(2, ls.size());
     }
 
     @Test
