@@ -44,6 +44,7 @@ public class MovieRepository extends Repository{
         movieMdbCollection.drop();
     }
 
+
     public ArrayList<MovieMdb> findAll() {
         return movieMdbCollection.find().into(new ArrayList<> ());
     }
