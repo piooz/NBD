@@ -1,14 +1,16 @@
 package repository;
 
+import com.mongodb.MongoCommandException;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.TransactionBody;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.Updates;
+import com.mongodb.client.model.ValidationOptions;
 import com.mongodb.client.result.UpdateResult;
 import model.NormalMdb;
 import model.ShowMdb;
 import model.TicketMdb;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
@@ -23,7 +25,42 @@ public class TicketRepository extends Repository{
 
     public TicketRepository() {
         initConnection();
-//        getCinemaDB().createCollection("tickets");
+        try {
+            getCinemaDB().createCollection("tickets", new CreateCollectionOptions().validationOptions( new ValidationOptions().validator(
+                    Document.parse(
+                            """
+    {
+       $jsonSchema: {
+          bsonType: "object",
+          required: [ "show" ],
+          properties: {
+             show: {
+                bsonType: "$oid",
+                description: "show objectId"
+             },
+             client: {
+                bsonType: "$iod",
+                description: "client objectId"
+             },
+             seatNumber: {
+                bsonType: "int",
+                minimum: 0,
+                description: "must be a positive integer"
+             }
+             price: {
+                bsonType: "float",
+                minimum: 0,
+                description: "must be a positive float"
+             }
+          }
+       }
+    }
+                    """
+                    )
+            )));
+        } catch(MongoCommandException ignored) {
+        }
+
         ticketCollection = getCinemaDB().getCollection("tickets", TicketMdb.class);
         showCollection = getCinemaDB().getCollection("shows", ShowMdb.class);
     }
@@ -79,8 +116,19 @@ public class TicketRepository extends Repository{
 
 
     public TicketMdb remove(ObjectId id) {
-        Bson filer = eq("_id", id);
-        return ticketCollection.findOneAndDelete(filer);
+        TicketMdb ticket;
+        Bson ticketFiler = eq("_id", id);
+        ClientSession session = getMongoClient().startSession();
+
+        session.startTransaction();
+            ticket = ticketCollection.findOneAndDelete(ticketFiler);
+            Bson update = Updates.inc("availableSeats", 1);
+        assert ticket != null;
+        Bson showFilter = eq("_id", ticket.getShow());
+            showCollection.updateOne(showFilter, update);
+        session.commitTransaction();
+
+        return ticket;
     }
     public void drop()
     {

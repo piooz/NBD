@@ -1,7 +1,11 @@
 package repository;
 
+import com.mongodb.MongoCommandException;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.ValidationOptions;
 import model.ClientMdb;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
@@ -13,8 +17,33 @@ public class ClientRepository extends Repository{
 
     public ClientRepository() {
         initConnection();
+        try {
+        getCinemaDB().createCollection("clients", new CreateCollectionOptions().validationOptions( new ValidationOptions().validator(
+                Document.parse(
+                        """
+{
+   $jsonSchema: {
+      bsonType: "object",
+      required: [ "email" ],
+      properties: {
+         lastName: {
+            bsonType: "string",
+            description: "must be a string"
+         },
+         email: {
+            bsonType: "string",
+            description: "must be a string"
+         }
+      }
+   }
+}
+                """
+                )
+        )));
+        } catch(MongoCommandException ignored) {
+        }
+
         clientMdbMongoCollection = getCinemaDB().getCollection("clients", ClientMdb.class);
-        System.out.println(clientMdbMongoCollection);
     }
     private final MongoCollection<ClientMdb> clientMdbMongoCollection;
 

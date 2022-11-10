@@ -1,5 +1,6 @@
 package repository;
 
+import com.mongodb.MongoCommandException;
 import model.MovieMdb;
 import model.NormalMdb;
 import model.ShowMdb;
@@ -19,7 +20,6 @@ class TicketRepositoryTest {
 
     @Test
     public void add() {
-        // przechodzi
         ObjectId id1 = new ObjectId();
         ObjectId id2 = new ObjectId();
 
@@ -74,19 +74,42 @@ class TicketRepositoryTest {
     }
 
     @Test
-    void remove() {
+    public void remove() {
         tr.drop();
-        mr.drop();
         ObjectId id1 = new ObjectId();
         ObjectId id2 = new ObjectId();
+        ObjectId id3 = new ObjectId();
 
         MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
         mr.add(mov);
-        ShowMdb show = new ShowMdb(id2, 4,0,3,mov);
+        ShowMdb show = new ShowMdb(id2, 4,2,3,mov);
         sr.add(show);
 
         TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId());
 
         assertTrue(tr.add(ticket));
+        ArrayList<ShowMdb> ls = sr.find(id2);
+        if(!ls.isEmpty()) {
+            assertEquals(1,ls.get(0).getAvailableSeats() );
+        }
+        else {
+            fail();
+        }
+
+        TicketMdb fromDB = tr.remove(ticket.getId());
+
+        ArrayList<ShowMdb> list = sr.find(id2);
+        if(!ls.isEmpty()) {
+            assertEquals(2, list.get(0).getAvailableSeats() );
+        }
+        else {
+            fail();
+        }
+    }
+
+    @Test
+    public void removeException() {
+        tr.drop();
+        assertThrows(AssertionError.class, ()-> tr.remove(new ObjectId()));
     }
 }

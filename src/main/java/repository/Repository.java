@@ -36,7 +36,7 @@ public abstract class Repository {
                 .codecRegistry(CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),codecRegistry))
                 .build();
         MongoClient = MongoClients.create(settings);
-        CinemaDB = MongoClient.getDatabase("admin");
+        CinemaDB = MongoClient.getDatabase("cinema");
     }
 
     public ConnectionString getConnectionString() {
@@ -58,5 +58,4 @@ public abstract class Repository {
     public MongoDatabase getCinemaDB() {
         return CinemaDB;
     }
-
 }

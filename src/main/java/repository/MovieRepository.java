@@ -1,8 +1,12 @@
 package repository;
 
+import com.mongodb.MongoCommandException;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.CreateCollectionOptions;
+import com.mongodb.client.model.ValidationOptions;
 import com.mongodb.client.result.UpdateResult;
 import model.MovieMdb;
+import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
@@ -16,6 +20,35 @@ public class MovieRepository extends Repository{
 
     public MovieRepository() {
         initConnection();
+        try {
+            getCinemaDB().createCollection("movies", new CreateCollectionOptions().validationOptions( new ValidationOptions().validator(
+                    Document.parse(
+                            """
+    {
+       $jsonSchema: {
+          bsonType: "object",
+          required: [ "title" ],
+          properties: {
+             title: {
+                bsonType: "string",
+                description: "must be a string"
+             },
+             director: {
+                bsonType: "string",
+                description: "must be a string"
+             },
+             genre: {
+                bsonType: "string",
+                description: "must be a string"
+             }
+          }
+       }
+    }
+                    """
+                    )
+            )));
+        } catch(MongoCommandException ignored) { }
+
         movieMdbCollection = getCinemaDB().getCollection("movies", MovieMdb.class);
     }
 
