@@ -66,6 +66,11 @@
             <artifactId>jedis</artifactId>
             <version>4.2.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>yasson</artifactId>
+            <version>3.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
