@@ -78,7 +78,7 @@ class ClientRepositoryTest {
         ObjectId id = new ObjectId();
         ClientMdb cli = new ClientMdb(id, "Jaworek", "Jacek@wp.pl");
         cr.add(cli);
-        ArrayList<ClientMdb> ls = cr.find(id);
+        ArrayList<ClientMdb> ls = cr.getList(id);
 
         assertEquals(1, ls.size());
         assertTrue(ls.contains(cli));
