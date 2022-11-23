@@ -32,7 +32,7 @@ class RepositoryTest {
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
 
 
-        TicketMdb tic = new NormalMdb(id, 20,10, show.getId(),cli.getClientID());
+        TicketMdb tic = new NormalMdb(id, 20,10, show,cli);
 
         TicketMdb ticket = RedisClient.jsonGet("ticket:"+id.toHexString(), TicketMdb.class);
         assertNull(ticket);
@@ -59,7 +59,7 @@ class RepositoryTest {
 
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
 
-        TicketMdb tic = new NormalMdb(id, 20,10,show.getId(), cli.getClientID());
+        TicketMdb tic = new NormalMdb(id, 20,10,show, cli);
 
         RedisClient.jsonSet("ticket:" + id.toHexString(), jsonb.toJson(tic));
         RedisClient.expire("ticket:" + id.toHexString(), 1200);

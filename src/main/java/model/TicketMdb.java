@@ -18,18 +18,17 @@ public abstract class TicketMdb {
     @BsonProperty("seatNumber")
     private int seatNumber;
     @BsonProperty("show")
-    private ObjectId show;
-
+    private ShowMdb show;
     @BsonProperty("client")
-    private ObjectId client;
+    private ClientMdb client;
 
 
     @BsonCreator
     public TicketMdb(@BsonId ObjectId id,
                      @BsonProperty("price") float price,
                      @BsonProperty("seatNumber") int seatNumber,
-                     @BsonProperty("show") ObjectId show,
-                     @BsonProperty("client") ObjectId client ) {
+                     @BsonProperty("show") ShowMdb show,
+                     @BsonProperty("client") ClientMdb client ) {
         this.price = price;
         this.seatNumber = seatNumber;
         this.id = id;
@@ -37,20 +36,20 @@ public abstract class TicketMdb {
         this.client = client;
     }
 
-    public ObjectId getClient() {
-        return client;
-    }
-
-    public void setClient(ObjectId client) {
-        this.client = client;
-    }
-
-    public ObjectId getShow() {
+    public ShowMdb getShow() {
         return show;
     }
 
-    public void setShow(ObjectId show) {
+    public void setShow(ShowMdb show) {
         this.show = show;
+    }
+
+    public ClientMdb getClient() {
+        return client;
+    }
+
+    public void setClient(ClientMdb client) {
+        this.client = client;
     }
 
     public float getPrice() {

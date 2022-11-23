@@ -30,7 +30,7 @@ class TicketRepositoryTest {
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
         cr.add(cli);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
 
         assertTrue(tr.add(ticket));
         ArrayList<ShowMdb> ls = sr.find(id2);
@@ -56,7 +56,7 @@ class TicketRepositoryTest {
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
         cr.add(cli);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
 
         assertTrue(tr.add(ticket));
     }
@@ -77,7 +77,7 @@ class TicketRepositoryTest {
 
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
         cr.add(cli);
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
 
         assertFalse(tr.add(ticket));
     }
@@ -97,7 +97,7 @@ class TicketRepositoryTest {
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
         cr.add(cli);
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(),cli.getClientID());
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
 
         assertTrue(tr.add(ticket));
         ArrayList<ShowMdb> ls = sr.find(id2);

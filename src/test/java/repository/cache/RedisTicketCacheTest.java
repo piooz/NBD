@@ -29,7 +29,7 @@ class RedisTicketCacheTest {
 
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
 
-        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show.getId(), cli.getClientID());
+        TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
         assertTrue(redisTicketCache.add(ticket));
 
     }
