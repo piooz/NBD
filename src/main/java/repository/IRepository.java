@@ -7,5 +7,4 @@ public interface IRepository <T> {
     boolean add(T item);
     void update(T item);
     T remove(ObjectId id);
-    boolean setConnection();
 }

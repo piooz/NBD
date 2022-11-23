@@ -1,5 +1,7 @@
 package repository.cache;
 
+import jakarta.json.bind.Jsonb;
+import jakarta.json.bind.JsonbBuilder;
 import model.TicketMdb;
 import org.bson.types.ObjectId;
 import redis.clients.jedis.DefaultJedisClientConfig;
@@ -9,22 +11,21 @@ import redis.clients.jedis.JedisPooled;
 import redis.clients.jedis.exceptions.JedisException;
 import repository.IRepository;
 import repository.RepositoryDecorator;
-import repository.TicketRepository;
 
-public class RedisCache extends RepositoryDecorator<TicketMdb> {
+public class RedisTicketCache extends RepositoryDecorator<TicketMdb> {
 
     protected JedisClientConfig jedisClientConfig = DefaultJedisClientConfig.builder().build();
     protected JedisPooled RedisClient;
+    protected Jsonb jsonb;
 
-    protected RedisCache(IRepository<TicketMdb> repository) {
+    protected RedisTicketCache(IRepository<TicketMdb> repository) {
         super.repository = repository;
         setConnection();
+        jsonb = JsonbBuilder.create();
     }
-    @Override
-    public boolean setConnection() {
+    private void setConnection() {
         this.jedisClientConfig = DefaultJedisClientConfig.builder().build();
         this.RedisClient = new JedisPooled(new HostAndPort("localhost", 6379), jedisClientConfig);
-        return true;
     }
 
     @Override
@@ -44,10 +45,11 @@ public class RedisCache extends RepositoryDecorator<TicketMdb> {
     @Override
     public boolean add(TicketMdb item) {
         try {
-            String key = "ticket:" + item.getId();
-            RedisClient.jsonSet(key, item);
+            String key = "ticket:" + item.getId().toHexString();
+            RedisClient.jsonSet(key, jsonb.toJson(item));
             RedisClient.expire(key, 1200);
-            return super.repository.add(item);
+//            return super.repository.add(item);
+            return true;
         } catch (JedisException e) {
             return super.repository.add(item);
         }
@@ -78,6 +80,7 @@ public class RedisCache extends RepositoryDecorator<TicketMdb> {
             return ticket;
         }
     }
-
-
+    public void flushCache() {
+        RedisClient.functionFlush();
+    }
 }

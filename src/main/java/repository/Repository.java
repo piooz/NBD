@@ -1,8 +1,6 @@
 package repository;
 
-import com.mongodb.ConnectionString;
-import com.mongodb.MongoClientSettings;
-import com.mongodb.MongoCredential;
+import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
@@ -14,15 +12,12 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import java.util.List;
 
 
-public abstract class Repository {
-    private ConnectionString connectionString =
+public abstract class Repository<T> implements IRepository<T>{
+    private final ConnectionString connectionString =
             new ConnectionString("mongodb://localhost:27017");
 
-//    private ConnectionString connectionString =
-//            new ConnectionString("mongodb://localhost:27017,mogo.... /?replicaSet=replica_set_single");
-
-    private MongoCredential mongoCredential = MongoCredential.createCredential("admin","admin","pass".toCharArray());
-    private CodecRegistry codecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder()
+    private final MongoCredential mongoCredential = MongoCredential.createCredential("admin","admin","pass".toCharArray());
+    private final CodecRegistry codecRegistry = CodecRegistries.fromProviders(PojoCodecProvider.builder()
             .automatic(true)
             .conventions(List.of(Conventions.ANNOTATION_CONVENTION))
             .build());
@@ -37,18 +32,6 @@ public abstract class Repository {
                 .build();
         MongoClient = MongoClients.create(settings);
         CinemaDB = MongoClient.getDatabase("cinema");
-    }
-
-    public ConnectionString getConnectionString() {
-        return connectionString;
-    }
-
-    public MongoCredential getMongoCredential() {
-        return mongoCredential;
-    }
-
-    public CodecRegistry getCodecRegistry() {
-        return codecRegistry;
     }
 
     public com.mongodb.client.MongoClient getMongoClient() {

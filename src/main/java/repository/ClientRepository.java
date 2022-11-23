@@ -5,6 +5,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.ValidationOptions;
 import model.ClientMdb;
+import org.bson.BSONObject;
+import org.bson.BsonDocument;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ClientRepository extends Repository{
+public class ClientRepository extends Repository<ClientMdb>{
 
     public ClientRepository() {
         initConnection();
@@ -47,12 +49,28 @@ public class ClientRepository extends Repository{
     }
     private final MongoCollection<ClientMdb> clientMdbMongoCollection;
 
+    @Override
+    public ClientMdb get(ObjectId id) {
+        ArrayList<ClientMdb> list = getList(id);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
     public boolean add(ClientMdb client) {
         if(isExisting(client)) {
             return false;
         }
         clientMdbMongoCollection.insertOne(client);
         return true;
+    }
+
+    @Override
+    public void update(ClientMdb item) {
+        Bson filter = eq("_id", item.getClientID());
+        clientMdbMongoCollection.findOneAndReplace(filter, item);
     }
 
     private boolean isExisting(ClientMdb client) {
@@ -63,6 +81,7 @@ public class ClientRepository extends Repository{
         return !ls.isEmpty();
     }
 
+    @Override
     public ClientMdb remove(ObjectId id) {
         Bson filer = eq("_id", id);
         return clientMdbMongoCollection.findOneAndDelete(filer);
@@ -76,7 +95,7 @@ public class ClientRepository extends Repository{
         return clientMdbMongoCollection.find().into(new ArrayList<> ());
     }
 
-    public ArrayList<ClientMdb> find(ObjectId id) {
+    public ArrayList<ClientMdb> getList(ObjectId id) {
         Bson filter = eq("_id", id);
 
         return clientMdbMongoCollection.find(filter, ClientMdb.class).into(new ArrayList<> ());

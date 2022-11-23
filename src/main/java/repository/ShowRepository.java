@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ShowRepository extends Repository{
+public class ShowRepository extends Repository<ShowMdb> {
 
     private final MongoCollection<ShowMdb> showMongoCollection;
 
@@ -56,12 +56,28 @@ public class ShowRepository extends Repository{
         }
         showMongoCollection = getCinemaDB().getCollection("shows", ShowMdb.class);
     }
+
+    @Override
+    public ShowMdb get(ObjectId id) {
+        ArrayList<ShowMdb> list = find(id);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
     public boolean add(ShowMdb show) {
         if(isExisting(show)) {
             return false;
         }
         showMongoCollection.insertOne(show);
         return true;
+    }
+
+    @Override
+    public void update(ShowMdb item) {
+
     }
 
     private boolean isExisting(ShowMdb show) {

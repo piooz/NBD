@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.*;
 
-public class MovieRepository extends Repository{
+public class MovieRepository extends Repository<MovieMdb>{
 
     private final MongoCollection<MovieMdb> movieMdbCollection;
 
@@ -52,12 +52,28 @@ public class MovieRepository extends Repository{
         movieMdbCollection = getCinemaDB().getCollection("movies", MovieMdb.class);
     }
 
+    @Override
+    public MovieMdb get(ObjectId id) {
+        ArrayList<MovieMdb> list = find(id);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
     public boolean add(MovieMdb movie) {
         if(isExisting(movie)) {
             return false;
         }
         movieMdbCollection.insertOne(movie);
         return true;
+    }
+
+    @Override
+    public void update(MovieMdb item) {
+        Bson filter = eq("_id", item.getId());
+        movieMdbCollection.findOneAndReplace(filter, item);
     }
 
     private boolean isExisting(MovieMdb movie) {
@@ -68,6 +84,7 @@ public class MovieRepository extends Repository{
         return !ls.isEmpty();
     }
 
+    @Override
     public MovieMdb remove(ObjectId id) {
         Bson filer = eq("_id", id);
         return movieMdbCollection.findOneAndDelete(filer);

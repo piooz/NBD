@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class TicketRepository extends Repository{
+public class TicketRepository extends Repository<TicketMdb>{
 
     private final MongoCollection<TicketMdb> ticketCollection;
     private final MongoCollection<ShowMdb> showCollection;
@@ -65,7 +65,23 @@ public class TicketRepository extends Repository{
         showCollection = getCinemaDB().getCollection("shows", ShowMdb.class);
     }
 
+    @Override
+    public TicketMdb get(ObjectId id) {
+        ArrayList<TicketMdb> list = find(id);
+        if(list.isEmpty()){
+            return null;
+        }
+        return list.get(0);
+    }
+
+    @Override
     public boolean add(TicketMdb ticket) {
+
+        ticketCollection.insertOne(ticket);
+        return true;
+
+    }
+    public boolean add2(TicketMdb ticket) {
         try (ClientSession session = getMongoClient().startSession()) {
             session.startTransaction();
             transactionBody(ticket);
@@ -74,6 +90,12 @@ public class TicketRepository extends Repository{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void update(TicketMdb item) {
+        Bson filter = eq("_id", item.getId());
+        ticketCollection.findOneAndReplace(filter, item);
     }
 
     private void transactionBody(TicketMdb ticket) {
@@ -115,6 +137,7 @@ public class TicketRepository extends Repository{
     }
 
 
+    @Override
     public TicketMdb remove(ObjectId id) {
         TicketMdb ticket;
         Bson ticketFiler = eq("_id", id);
