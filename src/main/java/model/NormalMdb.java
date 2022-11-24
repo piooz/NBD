@@ -10,6 +10,9 @@ import org.bson.types.ObjectId;
 @BsonDiscriminator(key = "_cls", value = "normal")
 public class NormalMdb extends TicketMdb {
 
+    public NormalMdb() {
+    }
+
     @BsonCreator
     public NormalMdb(@BsonId ObjectId id,
                       @BsonProperty("price") float price,

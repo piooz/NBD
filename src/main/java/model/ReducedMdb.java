@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 @BsonDiscriminator(key = "_cls", value = "reduced")
 public class ReducedMdb extends TicketMdb{
 
+    public ReducedMdb() {
+    }
     @BsonCreator
     public ReducedMdb(@BsonId ObjectId id,
                       @BsonProperty("price") float price,

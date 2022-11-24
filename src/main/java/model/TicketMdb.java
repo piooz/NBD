@@ -1,12 +1,17 @@
 package model;
 
+import jakarta.json.bind.annotation.JsonbSubtype;
+import jakarta.json.bind.annotation.JsonbTypeInfo;
 import org.bson.codecs.pojo.annotations.BsonCreator;
 import org.bson.codecs.pojo.annotations.BsonDiscriminator;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
+import org.hibernate.annotations.Type;
 
 import java.util.Objects;
+
+import static org.eclipse.persistence.expressions.ExpressionOperator.As;
 
 @BsonDiscriminator(key = "_cls", value="abstract")
 public abstract class TicketMdb {
@@ -21,6 +26,9 @@ public abstract class TicketMdb {
     private ShowMdb show;
     @BsonProperty("client")
     private ClientMdb client;
+
+    public TicketMdb() {
+    }
 
 
     @BsonCreator
