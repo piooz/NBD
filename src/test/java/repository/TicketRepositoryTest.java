@@ -72,14 +72,14 @@ class TicketRepositoryTest {
 
         MovieMdb mov = new MovieMdb(id1, "UP" ,"Animation","Novak" );
         mr.add(mov);
-        ShowMdb show = new ShowMdb(id2, 4,0,3,mov);
+        ShowMdb show = new ShowMdb(id2, 4,1,3,mov);
         sr.add(show);
 
         ClientMdb cli = new ClientMdb(id3,"Jaworek", "Jacek@wp.pl");
         cr.add(cli);
         TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
 
-        assertFalse(tr.add(ticket));
+        assertTrue(tr.add(ticket));
     }
 
     @Test

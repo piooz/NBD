@@ -30,23 +30,57 @@ public class TicketRepository extends Repository<TicketMdb>{
                     Document.parse(
                             """
     {
-       $jsonSchema: {
+       jsonSchema: {
           bsonType: "object",
-          required: [ "show" ],
           properties: {
-             show: {
-                bsonType: "$oid",
-                description: "show objectId"
-             },
-             client: {
-                bsonType: "$iod",
-                description: "client objectId"
-             },
+            show: {
+              bsonType: "object",
+              properties: {
+                show: {
+                    bsonType: "object",
+                    properties: {
+                      movie: {
+                      bsonType: "object",
+                      description: "movie object"
+                    },
+                   seats: {
+                      bsonType: "int",
+                      minimum: 1,
+                      description: "must be a positive integer"
+                   },
+                   availableSeats: {
+                      bsonType: "int",
+                      minimum: 1,
+                      description: "must be a positive integer"
+                   },
+                   hallNumber: {
+                      bsonType: "int",
+                      minimum: 0,
+                      description: "must be a integer"
+                   }
+                  }
+                }
+              }
+            },
+            client: {
+              bsonType: "object",
+              required: [ "email" ],
+              properties: {
+                 lastName: {
+                    bsonType: "string",
+                    description: "must be a string"
+                 },
+                 email: {
+                    bsonType: "string",
+                    description: "must be a string"
+                 }
+              }
+            },
              seatNumber: {
                 bsonType: "int",
                 minimum: 0,
                 description: "must be a positive integer"
-             }
+             },
              price: {
                 bsonType: "float",
                 minimum: 0,

@@ -38,7 +38,7 @@ public class ShowRepository extends Repository<ShowMdb> {
              },
              availableSeats: {
                 bsonType: "int",
-                minimum: 0,
+                minimum: 1,
                 description: "must be a positive integer"
              }
              hallNumber: {
