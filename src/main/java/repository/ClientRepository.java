@@ -1,104 +1,43 @@
 package repository;
 
-import com.mongodb.MongoCommandException;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.CreateCollectionOptions;
-import com.mongodb.client.model.ValidationOptions;
-import model.ClientMdb;
-import org.bson.BSONObject;
-import org.bson.BsonDocument;
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
 
-import java.util.ArrayList;
+
+import model.Client;
+
+import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class ClientRepository extends Repository<ClientMdb>{
+public class ClientRepository extends Repository<Client>{
 
-    public ClientRepository() {
-        initConnection();
-        try {
-        getCinemaDB().createCollection("clients", new CreateCollectionOptions().validationOptions( new ValidationOptions().validator(
-                Document.parse(
-                        """
-{
-   $jsonSchema: {
-      bsonType: "object",
-      required: [ "email" ],
-      properties: {
-         lastName: {
-            bsonType: "string",
-            description: "must be a string"
-         },
-         email: {
-            bsonType: "string",
-            description: "must be a string"
-         }
-      }
-   }
-}
-                """
-                )
-        )));
-        } catch(MongoCommandException ignored) {
-        }
-
-        clientMdbMongoCollection = getCinemaDB().getCollection("clients", ClientMdb.class);
-    }
-    private final MongoCollection<ClientMdb> clientMdbMongoCollection;
 
     @Override
-    public ClientMdb get(ObjectId id) {
-        ArrayList<ClientMdb> list = getList(id);
-        if(list.isEmpty()){
-            return null;
-        }
-        return list.get(0);
+    public Client get(Object element) {
+        return null;
     }
 
     @Override
-    public boolean add(ClientMdb client) {
-        if(isExisting(client)) {
-            return false;
-        }
-        clientMdbMongoCollection.insertOne(client);
-        return true;
+    public void add(Client elements) {
+
     }
 
     @Override
-    public void update(ClientMdb item) {
-        Bson filter = eq("_id", item.getClientID());
-        clientMdbMongoCollection.findOneAndReplace(filter, item);
-    }
+    public void remove(Client elements) {
 
-    private boolean isExisting(ClientMdb client) {
-        Bson filter;
-        filter = eq("email", client.getEmail());
-
-        ArrayList<ClientMdb> ls = clientMdbMongoCollection.find(filter).into(new ArrayList<>());
-        return !ls.isEmpty();
     }
 
     @Override
-    public ClientMdb remove(ObjectId id) {
-        Bson filer = eq("_id", id);
-        return clientMdbMongoCollection.findOneAndDelete(filer);
-    }
-    public void drop()
-    {
-        clientMdbMongoCollection.drop();
+    public void update(Client elements) {
+
     }
 
-    public ArrayList<ClientMdb> findAll() {
-        return clientMdbMongoCollection.find().into(new ArrayList<> ());
+    @Override
+    public List<Client> find(Object elements) {
+        return null;
     }
 
-    public ArrayList<ClientMdb> getList(ObjectId id) {
-        Bson filter = eq("_id", id);
-
-        return clientMdbMongoCollection.find(filter, ClientMdb.class).into(new ArrayList<> ());
+    @Override
+    public List<Client> getAll() {
+        return null;
     }
-
 }
