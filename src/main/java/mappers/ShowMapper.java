@@ -13,5 +13,5 @@ public interface ShowMapper {
     ShowDao showDao(@DaoKeyspace String keyspace, @DaoTable String table);
 
     @DaoFactory
-    ShowDao showtDao();
+    ShowDao showDao();
 }

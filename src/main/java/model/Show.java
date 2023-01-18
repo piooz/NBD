@@ -2,7 +2,9 @@ package model;
 
 
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
+import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -15,7 +17,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @CqlName("shows")
+@Entity
 public class Show {
+
+    public Show() {
+    }
+
     public Show(UUID show_id, @NonNull int seats, @NonNull int availableSeats, @NonNull Movie movie) {
         this.show_id = show_id;
         this.seats = seats;
@@ -23,22 +30,54 @@ public class Show {
         this.movie = movie;
     }
 
+    @NotNull
+    @PartitionKey
+    @CqlName("show_id")
     private UUID show_id;
 
-    @NonNull
-    @PartitionKey
+
     @CqlName("seats")
     private int seats;
 
-    @NonNull
-    @PartitionKey
+
     @CqlName("availableSeats")
     private int availableSeats;
 
     @NonNull
-    @PartitionKey
     @CqlName("movie")
     private Movie movie;
+
+    public UUID getShow_id() {
+        return show_id;
+    }
+
+    public void setShow_id(UUID show_id) {
+        this.show_id = show_id;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
+    }
+
+    public int getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public void setAvailableSeats(int availableSeats) {
+        this.availableSeats = availableSeats;
+    }
+
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
 
     @Override
     public boolean equals(Object o) {
