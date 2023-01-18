@@ -18,7 +18,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @CqlName("movies")
+@Entity
 public class Movie {
+    public Movie() {
+    }
 
     public Movie(UUID movie_id, @NonNull String title, @NonNull String genre, @NonNull String director) {
         this.movie_id = movie_id;
@@ -27,22 +30,53 @@ public class Movie {
         this.director = director;
     }
 
+    @CqlName("movie_id")
+    @PartitionKey
     private UUID movie_id;
 
-    @NonNull
-    @PartitionKey
+
     @CqlName("title")
     private String title;
 
-    @NonNull
-    @PartitionKey
+
     @CqlName("genre")
     private String genre;
 
-    @NonNull
-    @PartitionKey
+
     @CqlName("director")
     private String director;
+
+    public UUID getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(UUID movie_id) {
+        this.movie_id = movie_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
 
     @Override
     public boolean equals(Object o) {

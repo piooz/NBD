@@ -1,6 +1,7 @@
 package model;
 
 import com.datastax.oss.driver.api.mapper.annotations.CqlName;
+import com.datastax.oss.driver.api.mapper.annotations.Entity;
 import com.datastax.oss.driver.api.mapper.annotations.PartitionKey;
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,7 +15,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @CqlName("clients")
+@Entity
 public class Client {
+    public Client() {
+    }
 
     public Client(UUID client_id, @NonNull String lastName, @NonNull String email) {
         this.client_id = client_id;
@@ -22,17 +26,42 @@ public class Client {
         this.email = email;
     }
 
+    @NonNull
+    @PartitionKey
+    @CqlName("client_id")
     private UUID client_id;
 
     @NonNull
-    @PartitionKey
     @CqlName("lastName")
     private String lastName;
 
     @NonNull
-    @PartitionKey
     @CqlName("email")
     private String email;
+
+    public UUID getClient_id() {
+        return client_id;
+    }
+
+    public void setClient_id(UUID client_id) {
+        this.client_id = client_id;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @Override
     public boolean equals(Object o) {
