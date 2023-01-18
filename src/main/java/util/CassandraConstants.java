@@ -3,6 +3,9 @@ package util;
 import com.datastax.oss.driver.api.core.CqlIdentifier;
 
 public class CassandraConstants {
+
+    public static final CqlIdentifier CINEMA = CqlIdentifier.fromCql("cinema");
+
     public static final CqlIdentifier MOVIES = CqlIdentifier.fromCql("movies");
     public static final CqlIdentifier MOVIE_ID = CqlIdentifier.fromCql("movie_id");
     public static final CqlIdentifier TITLE = CqlIdentifier.fromCql("title");
