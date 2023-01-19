@@ -1,5 +1,5 @@
 package model;
 
-public class Reduced extends Ticket {
+public class Reduced {
 
 }

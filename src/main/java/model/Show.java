@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -23,7 +24,7 @@ public class Show {
     public Show() {
     }
 
-    public Show(UUID show_id, @NonNull int seats, @NonNull int availableSeats, @NonNull Movie movie) {
+    public Show(UUID show_id, @NonNull int seats, @NonNull int availableSeats, @NonNull UUID movie) {
         this.show_id = show_id;
         this.seats = seats;
         this.availableSeats = availableSeats;
@@ -45,7 +46,7 @@ public class Show {
 
     @NonNull
     @CqlName("movie")
-    private Movie movie;
+    private UUID movie;
 
     public UUID getShow_id() {
         return show_id;
@@ -71,37 +72,34 @@ public class Show {
         this.availableSeats = availableSeats;
     }
 
-    public Movie getMovie() {
+    public UUID getMovie() {
         return movie;
     }
 
-    public void setMovie(Movie movie) {
+    public void setMovie(UUID movie) {
         this.movie = movie;
+    }
+
+    @Override
+    public String toString() {
+        return "Show{" +
+                "show_id=" + show_id +
+                ", seats=" + seats +
+                ", availableSeats=" + availableSeats +
+                ", movie=" + movie +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (!(o instanceof Show)) return false;
         Show show = (Show) o;
-
-        return new EqualsBuilder().append(show_id, show.show_id).isEquals();
+        return seats == show.seats && availableSeats == show.availableSeats && show_id.equals(show.show_id) && movie.equals(show.movie);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37).append(show_id).toHashCode();
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("show_id", show_id)
-                .append("seats", seats)
-                .append("availableSeats", availableSeats)
-                .append("movie", movie)
-                .toString();
+        return Objects.hash(show_id, seats, availableSeats, movie);
     }
 }

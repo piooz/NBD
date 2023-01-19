@@ -3,10 +3,11 @@ package repository;
 import org.bson.types.ObjectId;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IRepository <T> {
 
-    T get(Object element);
+    T get(UUID id);
 
     void add(T elements);
 

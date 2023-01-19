@@ -25,38 +25,41 @@ public class CinemaDDL {
                 .withKeyspace(CqlIdentifier.fromCql("cinema"))
                 .build();
 
-        CreateKeyspace keyspace = createKeyspace(CINEMA)
-                .ifNotExists()
-                .withSimpleStrategy(2)
-                .withDurableWrites(true);
-        SimpleStatement createKeyspace = keyspace.build();
-        session.execute(createKeyspace);
+        // Dlaczego Kasia nie odpowiada tak długo? / pewnie lubi mojego requesta
+        // Odkomentuj, storz tabele w dokerze tylko raz i zakomentuj aby nie kusic TimeOut Exception
 
-        SimpleStatement createClients = SchemaBuilder.createTable(CLIENTS)
-                .ifNotExists()
-                .withPartitionKey(CqlIdentifier.fromCql("client_id"), DataTypes.UUID)
-                .withColumn(CqlIdentifier.fromCql("lastName"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("email"), DataTypes.TEXT)
-                .build();
-        session.execute(createClients);
+//        CreateKeyspace keyspace = createKeyspace(CINEMA)
+//                .ifNotExists()
+//                .withSimpleStrategy(2)
+//                .withDurableWrites(true);
+//        SimpleStatement se = keyspace.build();
+//        session.execute(se);
 
-        SimpleStatement createMovies= SchemaBuilder.createTable(MOVIES)
-                .ifNotExists()
-                .withPartitionKey(CqlIdentifier.fromCql("movie_id"), DataTypes.UUID)
-                .withColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("genre"), DataTypes.TEXT)
-                .withColumn(CqlIdentifier.fromCql("director"), DataTypes.TEXT)
-                .build();
-        session.execute(createMovies);
+//        SimpleStatement createClients = SchemaBuilder.createTable(CLIENTS)
+//                .ifNotExists()
+//                .withPartitionKey(CqlIdentifier.fromCql("client_id"), DataTypes.UUID)
+//                .withColumn(CqlIdentifier.fromCql("lastName"), DataTypes.TEXT)
+//                .withColumn(CqlIdentifier.fromCql("email"), DataTypes.TEXT)
+//                .build();
+//        session.execute(createClients);
+//
+//        SimpleStatement createMovies= SchemaBuilder.createTable(MOVIES)
+//                .ifNotExists()
+//                .withPartitionKey(CqlIdentifier.fromCql("movie_id"), DataTypes.UUID)
+//                .withColumn(CqlIdentifier.fromCql("title"), DataTypes.TEXT)
+//                .withColumn(CqlIdentifier.fromCql("genre"), DataTypes.TEXT)
+//                .withColumn(CqlIdentifier.fromCql("director"), DataTypes.TEXT)
+//                .build();
+//        session.execute(createMovies);
 
-        SimpleStatement createShows = SchemaBuilder.createTable(SHOWS)
-                .ifNotExists()
-                .withPartitionKey(CqlIdentifier.fromCql("show_id"), DataTypes.UUID)
-                .withColumn(CqlIdentifier.fromCql("seats"), DataTypes.INT)
-                .withColumn(CqlIdentifier.fromCql("availableSeats"), DataTypes.INT)
-                .withColumn(CqlIdentifier.fromCql("movie"), DataTypes.UUID)
-                .build();
-        session.execute(createShows);
+//        SimpleStatement createShows = SchemaBuilder.createTable(SHOWS)
+//                .ifNotExists()
+//                .withPartitionKey(CqlIdentifier.fromCql("show_id"), DataTypes.UUID)
+//                .withColumn(CqlIdentifier.fromCql("seats"), DataTypes.INT)
+//                .withColumn(CqlIdentifier.fromCql("availableSeats"), DataTypes.INT)
+//                .withColumn(CqlIdentifier.fromCql("movie"), DataTypes.UUID)
+//                .build();
+//        session.execute(createShows);
 
         return session;
     }

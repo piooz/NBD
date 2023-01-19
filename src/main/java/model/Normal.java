@@ -1,6 +1,7 @@
 package model;
 
 
-public class Normal extends Ticket {
+import java.util.UUID;
+public class Normal {
 
 }

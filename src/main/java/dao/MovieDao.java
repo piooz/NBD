@@ -5,13 +5,14 @@ import model.Movie;
 
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 
+import java.util.UUID;
+
 @Dao
 public interface MovieDao {
 
     @Insert
     void createMovie(Movie movie);
 
-    //@QueryProvider()
 
     @GetEntity
     Movie getMovie(ResultSet resultSet);
@@ -21,5 +22,11 @@ public interface MovieDao {
 
     @Delete
     void deleteClient(Movie client);
+
+    @Query("SELECT * FROM movies WHERE movie_id = :id")
+    ResultSet getById(UUID id);
+
+    @Query("SELECT * FROM movies")
+    Iterable<Object> getAll(UUID id);
 
 }

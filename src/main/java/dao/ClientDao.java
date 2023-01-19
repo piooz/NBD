@@ -3,7 +3,10 @@ package dao;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 
 import com.datastax.oss.driver.api.mapper.annotations.*;
+import com.datastax.oss.driver.api.mapper.entity.saving.NullSavingStrategy;
 import model.Client;
+
+import java.util.UUID;
 
 @Dao
 public interface ClientDao {
@@ -18,4 +21,9 @@ public interface ClientDao {
 
     @Delete
     void deleteClient(Client client);
+
+    @Query("SELECT * FROM clients WHERE client_id = :id")
+    ResultSet getById(UUID id);
+    @Query("SELECT * FROM clients")
+    ResultSet getAll();
 }
