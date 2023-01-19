@@ -22,6 +22,9 @@ public interface ClientDao {
     @Delete
     void deleteClient(Client client);
 
+    @Select
+    Client getById2(UUID id);
+
     @Query("SELECT * FROM clients WHERE client_id = :id")
     ResultSet getById(UUID id);
     @Query("SELECT * FROM clients")

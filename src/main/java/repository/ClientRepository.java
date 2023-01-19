@@ -33,7 +33,8 @@ public class ClientRepository implements IRepository<Client> {
     }
     @Override
     public Client get(UUID id) {
-        return clientDao.readClient(clientDao.getById(id));
+//        return clientDao.readClient(clientDao.getById(id));
+        return clientDao.getById2(id);
     }
 
     @Override
