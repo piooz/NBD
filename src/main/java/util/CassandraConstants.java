@@ -24,6 +24,13 @@ public class CassandraConstants {
     public static final CqlIdentifier EMAIL = CqlIdentifier.fromCql("email");
 
 
+    public static final CqlIdentifier TICKETS = CqlIdentifier.fromCql("tickets");
+    public static final CqlIdentifier TICKET_ID = CqlIdentifier.fromCql("ticket_id");
+    public static final CqlIdentifier SEAT = CqlIdentifier.fromCql("seat");
+    public static final CqlIdentifier SHOW = CqlIdentifier.fromCql("show");
+    public static final CqlIdentifier CLIENT = CqlIdentifier.fromCql("client");
+    public static final CqlIdentifier TYPE_INFO = CqlIdentifier.fromCql("typeInfo");
+
 
 
 }
