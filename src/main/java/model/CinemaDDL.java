@@ -61,16 +61,16 @@ public class CinemaDDL {
 //                .build();
 //        session.execute(createShows);
 
-        SimpleStatement createTickets = SchemaBuilder.createTable(TICKETS)
-                .ifNotExists()
-                .withPartitionKey(CqlIdentifier.fromCql("ticket_id"), DataTypes.UUID)
-                .withColumn(CqlIdentifier.fromCql("seats"), DataTypes.INT)
-                .withColumn(CqlIdentifier.fromCql("price"), DataTypes.FLOAT)
-                .withColumn(CqlIdentifier.fromCql("show"), DataTypes.UUID)
-                .withColumn(CqlIdentifier.fromCql("client"), DataTypes.UUID)
-                .withColumn(CqlIdentifier.fromCql("typeInfo"), DataTypes.TEXT)
-                .build();
-        session.execute(createTickets);
+//        SimpleStatement createTickets = SchemaBuilder.createTable(TICKETS)
+//                .ifNotExists()
+//                .withPartitionKey(CqlIdentifier.fromCql("ticket_id"), DataTypes.UUID)
+//                .withColumn(CqlIdentifier.fromCql("seat"), DataTypes.INT)
+//                .withColumn(CqlIdentifier.fromCql("price"), DataTypes.FLOAT)
+//                .withColumn(CqlIdentifier.fromCql("show"), DataTypes.UUID)
+//                .withColumn(CqlIdentifier.fromCql("client"), DataTypes.UUID)
+//                .withColumn(CqlIdentifier.fromCql("ticketinfo"), DataTypes.TEXT)
+//                .build();
+//        session.execute(createTickets);
 
         return session;
     }

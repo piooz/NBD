@@ -47,15 +47,10 @@ public class Ticket {
     public enum TicketType{
         Normal,
         Reduced;
-
-        @CqlName("typeInfo")
-        private String typeInfo;
-        public String getTypeInfo() {
-            return typeInfo;
-        }
     }
 
-    private String ticketType = TicketType.Normal.getTypeInfo();
+    @CqlName("ticketinfo")
+    private String ticketType = TicketType.Normal.name();
 
 
 
