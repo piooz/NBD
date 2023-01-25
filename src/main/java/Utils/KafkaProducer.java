@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ser.std.StringSerializer;
 import com.google.gson.Gson;
 import model.TicketMdb;
 import org.apache.kafka.clients.admin.*;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -16,7 +15,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class kafkaProducent {
+public class KafkaProducer {
     private String topicName = "tickets";
     Gson mapper = new Gson();
     public void createTopic() throws InterruptedException {
@@ -50,7 +49,7 @@ public class kafkaProducent {
         producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
 
         String ticketJson = mapper.toJson(ticket, TicketMdb.class);
-        KafkaProducer producer = new KafkaProducer(producerConfig);
+        org.apache.kafka.clients.producer.KafkaProducer producer = new org.apache.kafka.clients.producer.KafkaProducer(producerConfig);
         try {
             createTopic();
             Random random = new Random();
