@@ -5,8 +5,6 @@ import jakarta.json.bind.JsonbBuilder;
 import model.TicketMdb;
 import org.bson.types.ObjectId;
 import redis.clients.jedis.*;
-import redis.clients.jedis.args.FlushMode;
-import redis.clients.jedis.commands.JedisCommands;
 import redis.clients.jedis.exceptions.JedisException;
 import repository.IRepository;
 import repository.RepositoryDecorator;
@@ -65,6 +63,7 @@ public class RedisTicketCache extends RepositoryDecorator<TicketMdb> {
 //                if (inputStream != null) {
 //                    inputStream.close();
 //                }
+                //try wiht resources
                 inputStream.close();
             }
             return hp;
@@ -78,6 +77,7 @@ public class RedisTicketCache extends RepositoryDecorator<TicketMdb> {
 
         } catch (JedisException | NullPointerException e) {
             return super.repository.get(id);
+            // update cache
         }
     }
 
