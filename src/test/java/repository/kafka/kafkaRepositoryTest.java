@@ -1,19 +1,9 @@
 package repository.kafka;
 
-import Utils.KafkaProducer;
-import jakarta.json.bind.Jsonb;
-import jakarta.json.bind.JsonbBuilder;
+import Utils.KafkaTicketProducer;
 import model.*;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
-import redis.clients.jedis.DefaultJedisClientConfig;
-import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.JedisClientConfig;
-import redis.clients.jedis.JedisPooled;
-import repository.TicketRepository;
-import repository.cache.RedisTicketCache;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class kafkaRepositoryTest {
 
@@ -26,7 +16,7 @@ class kafkaRepositoryTest {
 //
 //    KafkaRepository kafkaRepository = new KafkaRepository(redisTicketCache);
 
-    KafkaProducer kafkaProducer = new KafkaProducer();
+    KafkaTicketProducer kafkaTicketProducer = new KafkaTicketProducer();
 
     @Test
     void add() {
@@ -41,6 +31,6 @@ class kafkaRepositoryTest {
 
         TicketMdb ticket = new NormalMdb(new ObjectId(), 2,3, show, cli);
 
-        kafkaProducer.produceTicket(ticket);
+        kafkaTicketProducer.produceTicket(ticket);
     }
 }

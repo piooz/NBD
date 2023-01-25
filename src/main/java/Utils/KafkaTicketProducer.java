@@ -1,5 +1,6 @@
 package Utils;
 
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import com.google.gson.Gson;
 import model.TicketMdb;
@@ -15,7 +16,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class KafkaProducer {
+public class KafkaTicketProducer {
     private String topicName = "tickets";
     Gson mapper = new Gson();
     //TODO: excepiton handling
@@ -50,7 +51,7 @@ public class KafkaProducer {
         producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
 
         String ticketJson = mapper.toJson(ticket, TicketMdb.class);
-        org.apache.kafka.clients.producer.KafkaProducer producer = new org.apache.kafka.clients.producer.KafkaProducer(producerConfig);
+        KafkaProducer producer = new KafkaProducer(producerConfig);
         try {
             createTopic();
             Random random = new Random();

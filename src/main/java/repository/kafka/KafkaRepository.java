@@ -1,6 +1,6 @@
 package repository.kafka;
 
-import Utils.KafkaProducer;
+import Utils.KafkaTicketProducer;
 import model.TicketMdb;
 import org.bson.types.ObjectId;
 import repository.IRepository;
@@ -8,7 +8,7 @@ import repository.RepositoryDecorator;
 
 public class KafkaRepository extends RepositoryDecorator<TicketMdb> {
 
-    KafkaProducer kafkaProducer = new KafkaProducer();
+    KafkaTicketProducer kafkaTicketProducer = new KafkaTicketProducer();
     public KafkaRepository(IRepository<TicketMdb> ticketRepository) {
         super.repository = ticketRepository;
     }
@@ -20,7 +20,7 @@ public class KafkaRepository extends RepositoryDecorator<TicketMdb> {
 
     @Override
     public boolean add(TicketMdb item) {
-        kafkaProducer.produceTicket(item);
+        kafkaTicketProducer.produceTicket(item);
         return true;
 //        return super.repository.add(item);
     }
