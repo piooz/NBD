@@ -1,6 +1,6 @@
 package Utils;
 
-import com.fasterxml.jackson.databind.ser.std.StringSerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 import com.google.gson.Gson;
 import model.TicketMdb;
 import org.apache.kafka.clients.admin.*;
@@ -18,9 +18,10 @@ import java.util.concurrent.Future;
 public class KafkaProducer {
     private String topicName = "tickets";
     Gson mapper = new Gson();
+    //TODO: excepiton handling
     public void createTopic() throws InterruptedException {
         Properties properties = new Properties();
-        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka1:9292,kafka3:9392");
+        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
         int partitionsNumber = 3;
         short replicationFactor = 3;
         try (Admin admin = Admin.create(properties)) {
@@ -57,7 +58,7 @@ public class KafkaProducer {
             ProducerRecord<String, String> record = new ProducerRecord<>(topicName,
                     "Cinema" + id, ticketJson);
             Future<RecordMetadata> sent = producer.send(record);
-            RecordMetadata recordMetadata = sent.get();
+            sent.get();
         } catch (InterruptedException | ExecutionException e) {
             System.out.println(e);
         }
