@@ -10,28 +10,44 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.apache.kafka.common.KafkaFuture;
 
+import java.net.InetAddress;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 public class KafkaTicketProducer {
-    private String topicName = "tickets";
-    Gson mapper = new Gson();
-    public void createTopic() throws InterruptedException {
-        Properties properties = new Properties();
 
-        properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
-        int partitionsNumber = 3;
-        short replicationFactor = 3;
+    private final String TOPIC = "tickets";
+    private final KafkaProducer<String, String> producer;
+    private final Gson mapper = new Gson();
 
-        try (Admin admin = Admin.create(properties)) {
-            NewTopic newTopic = new NewTopic(topicName, partitionsNumber, replicationFactor);
+    public KafkaTicketProducer() {
+        Properties producerConfig = new Properties();
+        producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        producerConfig.put(ProducerConfig.CLIENT_ID_CONFIG, "local");
+        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
+        producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
+        producerConfig.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+
+        this.producer = new KafkaProducer<String, String>(producerConfig);
+    }
+
+    public static void createTopic(String topicName, int partitions, short replicationFactory) throws InterruptedException {
+
+        Properties adminProperties = new Properties();
+        adminProperties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
+
+        try (Admin admin = Admin.create(adminProperties)) {
+            NewTopic newTopic = new NewTopic(topicName, partitions, replicationFactory);
             CreateTopicsOptions options = new CreateTopicsOptions()
                     .timeoutMs(1000)
                     .validateOnly(false)
                     .retryOnQuotaViolation(true);
+
             CreateTopicsResult result = admin.createTopics(List.of(newTopic), options);
             KafkaFuture<Void> futureResult = result.values().get(topicName);
             futureResult.get();
@@ -41,29 +57,27 @@ public class KafkaTicketProducer {
         }
     }
 
-    public void produceTicket(TicketMdb ticket) {
-        Properties producerConfig = new Properties();
+    public static boolean isTopicExisting(String topicName){
 
-        producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        producerConfig.put(ProducerConfig.CLIENT_ID_CONFIG, "local");
-        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
-        producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
-        producerConfig.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
-
-        String mappedTicket = mapper.toJson(ticket, TicketMdb.class);
-
-        KafkaProducer producer = new KafkaProducer(producerConfig);
-        try {
-            createTopic();
-            Random random = new Random();
-            int randomInt = random.nextInt(4) + 1;
-            ProducerRecord<String, String> record = new ProducerRecord<>(topicName,
-                    "Cinema" + randomInt, mappedTicket);
-            Future<RecordMetadata> sent = producer.send(record);
-            sent.get();
-        } catch (InterruptedException | ExecutionException exception) {
-            System.out.println(exception);
+        Properties adminProperties = new Properties();
+        adminProperties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
+        Set<String> topics = null;
+        try (Admin admin = Admin.create(adminProperties)) {
+             topics = admin.listTopics().names().get();
+        } catch (InterruptedException | ExecutionException e) {
+            System.out.println(e);
         }
+        assert topics != null;
+        return topics.contains(topicName);
+    }
+
+    public void produceTicket(TicketMdb ticket) throws ExecutionException, InterruptedException {
+        String mappedTicket = mapper.toJson(ticket, TicketMdb.class);
+        Random random = new Random();
+        int randomInt = random.nextInt(4) + 1;
+
+        ProducerRecord<String, String> record = new ProducerRecord<String, String>(TOPIC, "Cinema" + randomInt, mappedTicket);
+        Future<RecordMetadata> sent = producer.send(record);
+        sent.get();
     }
 }

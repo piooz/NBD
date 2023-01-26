@@ -1,25 +1,34 @@
-package repository.kafka;
+package Utils;
 
-import Utils.KafkaTicketProducer;
 import model.*;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 
-class kafkaRepositoryTest {
+import java.util.concurrent.ExecutionException;
 
-//    protected JedisClientConfig jedisClientConfig = DefaultJedisClientConfig.builder().build();
-//    protected Jsonb jsonb = JsonbBuilder.create();
-//    protected JedisPooled RedisClient = new JedisPooled(new HostAndPort("localhost", 6379), jedisClientConfig);
-//
-//    TicketRepository ticketRepository = new TicketRepository();
-//    RedisTicketCache redisTicketCache = new RedisTicketCache(ticketRepository);
-//
-//    KafkaRepository kafkaRepository = new KafkaRepository(redisTicketCache);
+import static org.junit.jupiter.api.Assertions.*;
+
+class KafkaTicketProducerTest {
 
     KafkaTicketProducer kafkaTicketProducer = new KafkaTicketProducer();
 
     @Test
-    void add() {
+    void createTopic() throws InterruptedException {
+        KafkaTicketProducer.createTopic("tickets", 3, (short)3);
+    }
+
+    @Test
+    void isTopicExisting() {
+        assertTrue(KafkaTicketProducer.isTopicExisting("tickets"));
+    }
+
+    @Test
+    void isTopicExistingFalse() {
+        assertFalse(KafkaTicketProducer.isTopicExisting("RandomBS"));
+    }
+
+    @Test
+    void produceTicket() throws ExecutionException, InterruptedException {
         ObjectId id1 = new ObjectId();
         ObjectId id2 = new ObjectId();
         ObjectId id3 = new ObjectId();

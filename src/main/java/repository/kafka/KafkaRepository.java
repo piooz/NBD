@@ -20,7 +20,6 @@ public class KafkaRepository extends RepositoryDecorator<TicketMdb> {
 
     @Override
     public boolean add(TicketMdb item) {
-        kafkaTicketProducer.produceTicket(item);
         return true;
 //        return super.repository.add(item);
     }
