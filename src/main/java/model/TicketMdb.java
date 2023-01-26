@@ -9,12 +9,13 @@ import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 import org.hibernate.annotations.Type;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import static org.eclipse.persistence.expressions.ExpressionOperator.As;
 
 @BsonDiscriminator(key = "_cls", value="abstract")
-public abstract class TicketMdb {
+public abstract class TicketMdb implements Serializable {
 
     @BsonId
     private ObjectId id;

@@ -19,12 +19,13 @@ import java.util.concurrent.Future;
 public class KafkaTicketProducer {
     private String topicName = "tickets";
     Gson mapper = new Gson();
-    //TODO: excepiton handling
     public void createTopic() throws InterruptedException {
         Properties properties = new Properties();
+
         properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
         int partitionsNumber = 3;
         short replicationFactor = 3;
+
         try (Admin admin = Admin.create(properties)) {
             NewTopic newTopic = new NewTopic(topicName, partitionsNumber, replicationFactor);
             CreateTopicsOptions options = new CreateTopicsOptions()
@@ -34,35 +35,35 @@ public class KafkaTicketProducer {
             CreateTopicsResult result = admin.createTopics(List.of(newTopic), options);
             KafkaFuture<Void> futureResult = result.values().get(topicName);
             futureResult.get();
-        } catch (ExecutionException ee) {
-            System.out.println(ee.getCause());
+        } catch (ExecutionException exception) {
+            // jeżeli już isnieje ignoruj
+            System.out.println(exception);
         }
     }
 
     public void produceTicket(TicketMdb ticket) {
         Properties producerConfig = new Properties();
-        producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class.getName());
-        producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class.getName());
-        producerConfig.put(ProducerConfig.CLIENT_ID_CONFIG, "local");
-        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "kafka1:9192,kafka2:9292,kafka3:9392");
-        producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
 
-        String ticketJson = mapper.toJson(ticket, TicketMdb.class);
+        producerConfig.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        producerConfig.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        producerConfig.put(ProducerConfig.CLIENT_ID_CONFIG, "local");
+        producerConfig.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "kafka1:9192,kafka2:9292,kafka3:9392");
+        producerConfig.put(ProducerConfig.ACKS_CONFIG, "all");
+        producerConfig.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+
+        String mappedTicket = mapper.toJson(ticket, TicketMdb.class);
+
         KafkaProducer producer = new KafkaProducer(producerConfig);
         try {
             createTopic();
             Random random = new Random();
-            int id = random.nextInt(5 - 1) + 1;
+            int randomInt = random.nextInt(4) + 1;
             ProducerRecord<String, String> record = new ProducerRecord<>(topicName,
-                    "Cinema" + id, ticketJson);
+                    "Cinema" + randomInt, mappedTicket);
             Future<RecordMetadata> sent = producer.send(record);
             sent.get();
-        } catch (InterruptedException | ExecutionException e) {
-            System.out.println(e);
+        } catch (InterruptedException | ExecutionException exception) {
+            System.out.println(exception);
         }
-
     }
 }
